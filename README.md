@@ -29,7 +29,7 @@ open browser in your computer,and enjoy it
 
 说明
 
-服务器需安装pomelo-admin库
+服务器需安装 [pomelo-admin]库
 
 
 ```
