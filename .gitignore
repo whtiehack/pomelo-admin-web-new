@@ -9,3 +9,5 @@ node_modules/*
 *.svn
 *.sublime-project
 *.sublime-workspace
+.idea
+/yarn-error.log

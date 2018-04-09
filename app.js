@@ -13,11 +13,24 @@ var adminClient = new admin.adminClient({
     password:config.password
 })
 
-adminClient.connect('pomelo-web-1',config.host,config.port,function(err){
-    if(err){
-        console.log(err);
+
+
+function connectorAdmin(cb){
+    if(adminClient.socket){
+        adminClient.socket.close();
     }
-})
+ //   console.log('state',adminClient.state);
+    adminClient.connect('pomelo-web-1',config.host,config.port,function(err){
+        if(err){
+            console.log(err);
+        }
+        if(cb){
+            cb(err);
+        }
+    })
+}
+
+connectorAdmin();
 
 //--------------------configure app----------------------
 var pub = __dirname + '/public';
@@ -30,6 +43,8 @@ app.configure(function() {
     app.use(express.methodOverride());
     app.use(express.bodyParser());
     app.set('basepath', __dirname);
+    app.set('x-powered-by', false);
+
 });
 
 app.configure('development', function() {
@@ -80,10 +95,15 @@ io.on('connection', function (socket) {
 function handleModuleReq(req,socket){
     req = JSON.parse(req);
     //ep.emit('req_socket',socket);
-    if(req.moduleId === 'scripts'){
-        adminClient.request(req.moduleId,{
-            command:req.body.command
-        },function(err,data,msg){
+    if(adminClient.state !==3){
+        connectorAdmin((err)=>{
+            processMessage();
+        })
+    }else{
+        processMessage();
+    }
+    function processMessage(){
+        adminClient.request(req.moduleId,req.body,function(err,data,msg){
             var resp ={
                 respId:0,
                 body:''
@@ -92,17 +112,5 @@ function handleModuleReq(req,socket){
             resp.body = data;
             socket.emit('client',JSON.stringify(resp));
         })
-    }else {
-        adminClient.request(req.moduleId,{
-        },function(err,data,msg){
-            //ep.emit('req_data',data);
-            var resp ={
-                respId:0,
-                body:''
-            }
-            resp.respId = req.reqId;
-            resp.body = data;
-            socket.emit('client',JSON.stringify(resp));
-        });
     }
 }
