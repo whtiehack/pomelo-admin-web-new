@@ -53,11 +53,15 @@ Ext.onReady(function() {
 				id: 'rpcDebug',
 				text: 'RPC Debug',
 				leaf: true
-			}/*, {
+			}, {
+                    id: 'testAdmin',
+                    text: 'TestAdminModule',
+                    leaf: true
+                }, {
 				id: 'profiler',
 				text: 'Profiler',
 				leaf: true
-			}*/]
+			}]
 		}
 	});
 

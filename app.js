@@ -93,7 +93,10 @@ io.on('connection', function (socket) {
  * @param socket
  */
 function handleModuleReq(req,socket){
-    req = JSON.parse(req);
+    if(typeof req == 'string'){
+        req = JSON.parse(req);
+    }
+   // req = JSON.parse(req);
     //ep.emit('req_socket',socket);
     if(adminClient.state !==3){
         connectorAdmin((err)=>{
