@@ -57,11 +57,11 @@ Ext.onReady(function() {
                     id: 'testAdmin',
                     text: 'TestAdminModule',
                     leaf: true
-                }, {
+                }, /*{
 				id: 'profiler',
 				text: 'Profiler',
 				leaf: true
-			}]
+			}*/]
 		}
 	});
 
