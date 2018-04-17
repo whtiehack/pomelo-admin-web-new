@@ -16,7 +16,7 @@ app.use(function(req, res, next) {
         const creds = plain_auth.split(':');
         const username = creds[0];
         const password = creds[1];
-        if((username === adminClient.username) && (password === adminConfig.password)) {
+        if((username === adminConfig.username) && (password === adminConfig.password)) {
             //认证成功，允许访问
             return next();
         }
