@@ -1,23 +1,35 @@
-var express = require('express');
-var adminConfig = require('./config/admin.json');
-var config = require('./config/server.json');
-var admin = require("pomelo-admin");
+const express = require('express');
+const adminConfig = require('./config/admin.json');
+const config = require('./config/server.json');
+const admin = require("pomelo-admin");
+const Mqtt = require('pomelo-admin/lib/protocol/mqtt/mqttClient');
+const app = express();  //
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 
-var app = express();  //
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
-
+let exited = false;
+Mqtt.prototype.exit = function(){
+    console.log('mqtt client exit!!');
+    exited = true;
+};
 //创建adminClient
-var adminClient = new admin.adminClient({
+const adminClient = new admin.adminClient({
     username:config.username,
     password:config.password
-})
+});
 
-
+adminClient.on('error',err=>{
+    console.log('!! mqtt admin client error',err);
+});
+adminClient.on('close',val=>{
+    console.log('@@ mqtt admin client close',val);
+    exited = true;
+});
 
 function connectorAdmin(cb){
-    if(adminClient.socket){
-        adminClient.socket.close();
+    if(adminClient.socket && adminClient.socket.socket){
+    //    adminClient.socket.close();
+    //    adminClient.socket = null;
     }
  //   console.log('state',adminClient.state);
     adminClient.connect('pomelo-web-1',config.host,config.port,function(err){
@@ -33,8 +45,8 @@ function connectorAdmin(cb){
 connectorAdmin();
 
 //--------------------configure app----------------------
-var pub = __dirname + '/public';
-var view = __dirname + '/views';
+const pub = __dirname + '/public';
+const view = __dirname + '/views';
 app.configure(function() {
     app.set('view engine', 'html');
     app.set('views', view);
@@ -56,7 +68,7 @@ app.configure('development', function() {
 });
 
 app.configure('production', function() {
-    var oneYear = 31557600000;
+    const oneYear = 31557600000;
     app.use(express.static(pub, {
         maxAge: oneYear
     }));
@@ -99,15 +111,26 @@ function handleModuleReq(req,socket){
    // req = JSON.parse(req);
     //ep.emit('req_socket',socket);
     if(adminClient.state !==3){
-        connectorAdmin((err)=>{
-            processMessage();
-        })
+        failedMessage();
+        return;
     }else{
         processMessage();
     }
+    function failedMessage(){
+        console.log('admin client has not connect',req);
+        socket.emit('client',JSON.stringify({respId:req.reqId,error:'admin client has not connect'}));
+        if(exited){
+            exited = false;
+            connectorAdmin();
+        }
+    }
     function processMessage(){
+        if(adminClient.state !==3 || !adminClient.socket || !adminClient.socket.socket){
+            failedMessage();
+            return;
+        }
         adminClient.request(req.moduleId,req.body,function(err,data,msg){
-            var resp ={
+            const resp ={
                 respId:0,
                 body:''
             }
