@@ -68,7 +68,7 @@ setInterval(function() {
 		}
 
 		var totalConnCount = 0, loginedCount = 0, info, list = [];
-		var msg2=msg.body;
+		var msg2=msg;
 		for(var sid in msg2) {
 			info = msg2[sid];
 			totalConnCount += msg2[sid].totalConnCount;
