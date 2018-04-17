@@ -6,7 +6,26 @@ const Mqtt = require('pomelo-admin/lib/protocol/mqtt/mqttClient');
 const app = express();  //
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
+//打开网页时弹出登录对话框
+app.use(function(req, res, next) {
+    const auth = req.headers['authorization'];
+    if(auth) {
+        const tmp = auth.split(' ');
+        const buf = new Buffer(tmp[1], 'base64');
+        const plain_auth = buf.toString();
+        const creds = plain_auth.split(':');
+        const username = creds[0];
+        const password = creds[1];
+        if((username === adminClient.username) && (password === adminConfig.password)) {
+            //认证成功，允许访问
+            return next();
+        }
+    }
 
+    //要让浏览器弹出登录对话框，必须将status设为401，Header中设置WWW-Authenticate
+    res.set('WWW-Authenticate', 'Basic realm=""');
+    res.status(401).end();
+});
 let exited = false;
 Mqtt.prototype.exit = function(){
     console.log('mqtt client exit!!');
