@@ -6,7 +6,9 @@ pomelo-admin-web is a web console for [pomelo](https://github.com/NetEase/pomelo
 
 
 ```
-npm install pomelo-admin-web
+git clone https://github.com/whtiehack/pomelo-admin-web-new.git
+cd pomelo-admin-web-new
+npm i -d
 ```
 
 
