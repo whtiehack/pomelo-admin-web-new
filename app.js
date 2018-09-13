@@ -117,8 +117,8 @@ app.get('/module/:mname', function (req, resp) {
     resp.render(req.params.mname);
 });
 
-server.listen(7001);
-console.log('[AdminConsoleStart] visit http://127.0.0.1:7001');
+server.listen(adminConfig.port);
+console.log('[AdminConsoleStart] visit http://127.0.0.1:' + adminConfig.port);
 
 io.on('connection', function (socket) {
     socket.emit('connect', {hello: 'world'});
