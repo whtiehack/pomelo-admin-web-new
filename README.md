@@ -2,7 +2,7 @@
 new pomelo-admin-web
 pomelo-admin-web is a web console for [pomelo](https://github.com/NetEase/pomelo). it is based on [pomelo-admin](https://github.com/NetEase/pomelo-admin). it is just an web console example, you can implement your style like web console.
 
-##Installation
+## Installation
 
 
 ```
@@ -10,17 +10,35 @@ npm install pomelo-admin-web
 ```
 
 
-##Usage
+## Usage
 just run
-
 
 ```
 node app.js
 ```
 
-
 open browser in your computer,and enjoy it
 
+# Docker Image
+
+```
+docker run --name pinusadminweb -d --network host -e ADMIN_USERNAME=admin  ADMIN_PASSWORD=admin   smallwhite/pinus-admin-web
+```
+
+
+## 更多的环境变量看这里：
+```
+adminConfig.username = process.env.ADMIN_USERNAME ? process.env.ADMIN_USERNAME : adminConfig.username;
+adminConfig.password = process.env.ADMIN_PASSWORD ? process.env.ADMIN_PASSWORD : adminConfig.password;
+adminConfig.port = process.env.ADMIN_PORT ? process.env.ADMIN_PORT : adminConfig.port;
+adminConfig.host = process.env.ADMIN_HOST ? process.env.ADMIN_HOST : adminConfig.host;
+
+config.host = process.env.SERVER_HOST ? process.env.SERVER_HOST : config.host;
+config.port = process.env.SERVER_PORT ? process.env.SERVER_PORT : config.port;
+config.username = process.env.SERVER_USERNAME ? process.env.SERVER_USERNAME : config.username;
+config.password = process.env.SERVER_PASSWORD ? process.env.SERVER_PASSWORD : config.password;
+
+```
 
 ## onlineUserModule
 
