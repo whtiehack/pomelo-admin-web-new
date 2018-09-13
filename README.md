@@ -24,7 +24,7 @@ open browser in your computer,and enjoy it
 # Docker Image
 
 ```
-docker run --name pinusadminweb -d --network host -e ADMIN_USERNAME=admin -e ADMIN_PASSWORD=admin   smallwhite/pinus-admin-web
+docker run --name pinusadminweb -d --network host -e ADMIN_USERNAME=admin -e ADMIN_PASSWORD=admin   smallwhite/pomelo-admin-web
 ```
 
 > 参数 `--network host` 目的是直接使用宿主机的网络。  如果去掉的话，那么启动容器的时候需要自己配置好环境变量。
