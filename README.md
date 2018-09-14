@@ -32,6 +32,15 @@ open browser in your computer,and enjoy it
 docker run --name pinusadminweb -d --network host -e ADMIN_USERNAME=admin -e ADMIN_PASSWORD=admin   smallwhite/pomelo-admin-web
 ```
 
+
+> 示例
+```
+docker run --name pinusadminweb3005 -d -p 7001:7001 --add-host dockerhost:`/sbin/ip route|awk '/default/ { print  $3}'` -e SERVER_HOST=192.168.1.10 -e ADMIN_PORT=7001 -e SERVER_PORT=3005 -e ADMIN_USERNAME=admin -e ADMIN_PASSWORD=admin   smallwhite/pomelo-admin-web
+
+> ceshi2
+docker run --name pinusadminweb3006 -d -p 7002:7002 --add-host dockerhost:`/sbin/ip route|awk '/default/ { print  $3}'` -e SERVER_HOST=192.168.1.10 -e ADMIN_PORT=7002 -e SERVER_PORT=3006 -e ADMIN_USERNAME=admin -e ADMIN_PASSWORD=admin   smallwhite/pomelo-admin-web
+```
+
 > 参数 `--network host` 目的是直接使用宿主机的网络。  如果去掉的话，那么启动容器的时候需要自己配置好环境变量。
 
 ## 更多的环境变量看这里：
