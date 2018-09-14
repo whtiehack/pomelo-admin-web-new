@@ -23,6 +23,11 @@ open browser in your computer,and enjoy it
 
 # Docker Image
 
+[![](https://images.microbadger.com/badges/image/smallwhite/pomelo-admin-web.svg)](https://microbadger.com/images/smallwhite/pomelo-admin-web "Get your own image badge on microbadger.com")
+
+[![](https://images.microbadger.com/badges/version/smallwhite/pomelo-admin-web.svg)](https://microbadger.com/images/smallwhite/pomelo-admin-web "Get your own version badge on microbadger.com")
+
+
 ```
 docker run --name pinusadminweb -d --network host -e ADMIN_USERNAME=admin -e ADMIN_PASSWORD=admin   smallwhite/pomelo-admin-web
 ```
